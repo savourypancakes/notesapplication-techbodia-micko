@@ -1,6 +1,7 @@
 # Ignore user secrets and config overrides
 appsettings.Development.json
 appsettings.json
+.env
 secrets.json
 
 # Ignore build outputs
