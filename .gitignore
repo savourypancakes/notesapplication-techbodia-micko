@@ -1,0 +1,19 @@
+# Ignore user secrets and config overrides
+appsettings.Development.json
+secrets.json
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore IDE-specific files
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore logs and temp files
+*.log
+*.tmp
+*.bak
