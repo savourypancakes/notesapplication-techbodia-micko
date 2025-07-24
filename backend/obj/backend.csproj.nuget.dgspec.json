@@ -68,9 +68,9 @@
               "target": "Package",
               "version": "[9.0.7, )"
             },
-            "Swagger": {
+            "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[9.0.3, )"
             },
             "System.Data.SqlClient": {
               "target": "Package",

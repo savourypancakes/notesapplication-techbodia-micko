@@ -21,10 +21,10 @@ public class NoteService : INoteService
         var sql = "SELECT * FROM Note WHERE NoteID = @Id";
         return await db.QueryFirstOrDefaultAsync<Note>(sql, new { Id = id });
     }
-    public async Task<Note?> GetNoteByTitle(string title)
+    public async Task<IEnumerable<Note?>> GetNoteByTitle(string title)
     {
         var sql = "SELECT * FROM Note WHERE NoteTitle LIKE @Title";
-        return await db.QuerySingleOrDefaultAsync<Note>(sql, new { Title = $"%{title}%" });
+        return await db.QueryAsync<Note>(sql, new { Title = $"%{title}%" });
     }
     public async Task<int> AddNote(Note note)
     {
@@ -37,10 +37,10 @@ public class NoteService : INoteService
     {
         var sql = @"
         UPDATE Note
-        SET NoteTitle = @NoteTitle
-            NoteContent = @NoteContent
+        SET NoteTitle = @NoteTitle,
+            NoteContent = @NoteContent,
             UpdatedOn = @UpdatedOn
-        WHERE NoteID = @Id";
+        WHERE NoteID = @NoteID";
         return await db.ExecuteAsync(sql, note);
     }
     public async Task<int> DeleteNote(int id)

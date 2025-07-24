@@ -38,7 +38,7 @@ namespace backend.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(Note note)
         {
-            if (note == null || note.Id < 0)
+            if (note == null || note.NoteID < 0)
             {
                 return BadRequest("Invalid note data.");
             }
