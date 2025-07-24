@@ -113,3 +113,5 @@ C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\obj\Deb
 C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\kokmi\Documents\GitHub\notesapplication-techbodia-micko\backend\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

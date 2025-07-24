@@ -1,5 +1,8 @@
 using System.Data;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +13,29 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IDbConnection>(sp =>
     new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+        };
+    });
+
+
 // Register services
 builder.Services.AddScoped<NoteService, NoteService>();
+builder.Services.AddScoped<AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -25,6 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

@@ -21,16 +21,23 @@ public class NoteService : INoteService
         var sql = "SELECT * FROM Note WHERE NoteID = @Id";
         return await db.QueryFirstOrDefaultAsync<Note>(sql, new { Id = id });
     }
-    public async Task<IEnumerable<Note?>> GetNoteByTitle(string title)
+    public async Task<IEnumerable<Note>> GetNoteByTitle(string title, int userId)
     {
-        var sql = "SELECT * FROM Note WHERE NoteTitle LIKE @Title";
-        return await db.QueryAsync<Note>(sql, new { Title = $"%{title}%" });
+        var sql = "SELECT * FROM Note WHERE NoteTitle LIKE @Title AND UserId = @UserId";
+        return await db.QueryAsync<Note>(sql, new { Title = $"{title}%", UserId = userId });
+
+    }
+
+    public async Task<IEnumerable<Note>> GetNotesByUserId(int userId)
+    {
+        var sql = "SELECT * FROM Note WHERE UserId = @UserId";
+        return await db.QueryAsync<Note>(sql, new { UserId = userId });
     }
     public async Task<int> AddNote(Note note)
     {
         var sql = @"
-        INSERT INTO Note (NoteTitle, NoteContent, CreatedOn, UpdatedOn) 
-        VALUES (@NoteTitle, @NoteContent, @CreatedOn, @UpdatedOn)";
+        INSERT INTO Note (NoteTitle, NoteContent, CreatedOn, UpdatedOn, UserId) 
+        VALUES (@NoteTitle, @NoteContent, @CreatedOn, @UpdatedOn, @UserId)";
         return await db.ExecuteAsync(sql, note);
     }
     public async Task<int> UpdateNote(Note note)
@@ -40,12 +47,12 @@ public class NoteService : INoteService
         SET NoteTitle = @NoteTitle,
             NoteContent = @NoteContent,
             UpdatedOn = @UpdatedOn
-        WHERE NoteID = @NoteID";
+        WHERE NoteID = @NoteID AND UserId = @UserId";
         return await db.ExecuteAsync(sql, note);
     }
-    public async Task<int> DeleteNote(int id)
+    public async Task<int> DeleteNote(int id, int userId)
     {
-        var sql = "DELETE FROM Note WHERE NoteID = @Id";
-        return await db.ExecuteAsync(sql, new {Id = id});
+        var sql = "DELETE FROM Note WHERE NoteID = @Id AND UserId = @UserId";
+        return await db.ExecuteAsync(sql, new { Id = id, UserId = userId });
     }
 }
