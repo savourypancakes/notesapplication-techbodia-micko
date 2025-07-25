@@ -8,7 +8,7 @@ public class Note
     [ForeignKey("UserId")]
     public User User { get; set; } = null!;
     public required string NoteTitle { get; set; }
-    public required string NoteContent { get; set; }
+    public string? NoteContent { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime? UpdatedOn { get; set; }
 }

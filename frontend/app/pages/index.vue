@@ -71,7 +71,7 @@ async function login() {
     localStorage.setItem('token', response.token);
 
     alert('Login successful!');
-    navigateTo('/dashboard'); // Adjust route as needed
+    navigateTo('/noteslist'); // Adjust route as needed
   } catch (err) {
     alert('Login failed.');
     console.error(err);
