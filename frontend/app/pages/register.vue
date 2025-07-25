@@ -1,8 +1,8 @@
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-md">
-      <h2 class="text-2xl font-bold text-center mb-6">Log In</h2>
-      <form @submit.prevent="login">
+      <h2 class="text-2xl font-bold text-center mb-6">Register</h2>
+      <form @submit.prevent="register">
 
         <div class="mb-4">
           <label class="block text-gray-700 mb-1" for="username">Username</label>
@@ -30,7 +30,7 @@
           type="submit"
           class="w-full bg-yellow-500 text-white font-bold text-2xl py-2 px-4 rounded-md hover:bg-yellow-600 transition"
         >
-          Log In
+          Register
         </button>
         </form>
         <div class="border-gray-300 border m-5"></div>
@@ -38,8 +38,8 @@
             type="submit"
             class="w-full bg-purple-500 text-white font-bold text-2xl py-2 px-4 rounded-md hover:bg-purple-600 transition"
         >
-            <NuxtLink to="/register">
-                Create an Account
+            <NuxtLink to="/">
+                Already have an account?
             </NuxtLink>
         </button>
     </div>
@@ -47,35 +47,30 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
 import { NuxtLink } from '#components';
 
 const config = useRuntimeConfig();
 
-const form = reactive({
+const form = ref({
   username: '',
   password: ''
 });
 
-async function login() {
+async function register() {
   try {
-    const response = await $fetch(`${config.public.apiBase}/auth/login`, {
+    const response = await $fetch(`${config.public.apiBase}/auth/register`, {
       method: 'POST',
       body: {
-        username: form.username,
-        password: form.password
+        username: form.value.username,
+        password: form.value.password
       }
     });
 
-    // Store token
-    localStorage.setItem('token', response.token);
-
-    alert('Login successful!');
-    navigateTo('/dashboard'); // Adjust route as needed
+    alert('Registration successful!');
+    navigateTo('/');
   } catch (err) {
-    alert('Login failed.');
+    alert('Registration failed.');
     console.error(err);
   }
 }
 </script>
-

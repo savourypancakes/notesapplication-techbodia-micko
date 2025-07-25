@@ -10,6 +10,11 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://localhost:5126/api'
+    }
+  },
   modules: [
     '@nuxt/content',
     '@nuxt/eslint',

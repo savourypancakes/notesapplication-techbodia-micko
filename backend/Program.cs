@@ -29,6 +29,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.WithOrigins("http://localhost:3000") // or your frontend domain
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+});
 
 // Register services
 builder.Services.AddScoped<NoteService, NoteService>();
@@ -50,5 +57,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseCors("AllowFrontend");
 
 app.Run();
