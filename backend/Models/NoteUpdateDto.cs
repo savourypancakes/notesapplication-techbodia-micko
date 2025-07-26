@@ -9,6 +9,5 @@ public class NoteUpdateDto
     [Required]
     public string NoteTitle { get; set; } = null!;
 
-    [Required]
-    public string NoteContent { get; set; } = null!;
+    public string? NoteContent { get; set; } = null!;
 }

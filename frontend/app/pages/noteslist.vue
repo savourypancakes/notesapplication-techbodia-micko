@@ -34,14 +34,74 @@
       </form>
     </div>
 
-    <!-- NOTE LIST -->
     <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-md">
       <h2 class="text-xl font-bold mb-4">Your Notes</h2>
       <ul v-if="notes.length">
-        <li v-for="note in notes" :key="note.id" class="mb-4 p-4 border border-gray-200 rounded-md">
-          <h3 class="text-lg font-semibold">{{ note.title }}</h3>
-          <p class="text-xs text-gray-400 mt-1">Created at: {{ formatDate(note.createdOn) }}</p>
-        </li>
+      <li
+        v-for="note in notes"
+        :key="note.noteID"
+        class="mb-4 p-4 border border-gray-200 rounded-md"
+      >
+        <!-- IF EDITING THIS NOTE -->
+        <div v-if="editingNoteId === note.noteID">
+          <input
+            v-model="editForm.title"
+            class="w-full mb-2 px-3 py-2 border rounded"
+            placeholder="Title"
+          />
+          <textarea
+            v-model="editForm.content"
+            class="w-full mb-2 px-3 py-2 border rounded"
+            placeholder="Content"
+          ></textarea>
+
+          <div class="flex gap-2">
+            <button @click="saveEdit(note.noteID)" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+              Save
+            </button>
+            <button @click="cancelEdit" class="bg-gray-300 px-4 py-1 rounded hover:bg-gray-400">
+              Cancel
+            </button>
+          </div>
+        </div>
+
+        <div v-else @click="note.content && toggleNote(note.noteID)" class="cursor-pointer">
+          <div class="flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-blue-600">
+              {{ note.title }}
+              <span v-if="note.content" class="ml-2 text-sm">
+                {{ isExpanded(note.noteID) ? '▼' : '►' }}
+              </span>
+            </h3>
+            <button
+              @click.stop="startEditing(note)"
+              class="text-sm text-yellow-600 hover:underline"
+            >
+              Edit
+            </button>
+          </div>
+
+          <p v-if="note.content && isExpanded(note.noteID)" class="text-gray-600 mt-2">
+            {{ note.content }}
+          </p>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-1">
+          Created: {{ formatDate(note.createdOn) }}
+        </p>
+        <p class="text-xs text-gray-400">
+          Updated: {{ formatDate(note.updatedOn) }}
+        </p>
+        <div class="flex justify-end mt-2">
+          <button
+            @click="deleteNote(note.noteID)"
+            class="text-red-500 hover:underline text-sm"
+          >
+            Delete
+          </button>
+        </div>
+      </li>
+
       </ul>
       <p v-else class="text-gray-500">No notes found.</p>
     </div>
@@ -56,8 +116,36 @@ const form = ref({
   title: '',
   content: ''
 });
-
 const notes = ref([]);
+const expandedNotes = ref(new Set());
+const editingNoteId = ref(null);
+const editForm = ref({
+  noteTitle: '',
+  noteContent: ''
+});
+
+function startEditing(note) {
+  editingNoteId.value = note.noteID;
+  editForm.value.title = note.title;
+  editForm.value.content = note.content;
+}
+
+function cancelEdit() {
+  editingNoteId.value = null;
+}
+
+function toggleNote(id) {
+  if (expandedNotes.value.has(id)) {
+    expandedNotes.value.delete(id);
+  } else {
+    expandedNotes.value.add(id);
+  }
+}
+
+function isExpanded(id) {
+  return expandedNotes.value.has(id);
+}
+
 
 // Dynamically read the token (important after refresh)
 function getToken() {
@@ -68,6 +156,54 @@ function getToken() {
 function formatDate(dateString) {
   return new Date(dateString).toLocaleString();
 }
+
+async function deleteNote(id) {
+  const token = getToken();
+  if (!confirm('Are you sure you want to delete this note?')) return;
+
+  try {
+    await $fetch(`${config.public.apiBase}/Note/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    // Refresh the notes list
+    await fetchNotes();
+  } catch (err) {
+    console.error('Failed to delete note:', err);
+    alert('Failed to delete the note.');
+  }
+}
+
+
+
+async function saveEdit(noteID) {
+  const token = getToken();
+  try {
+    await $fetch(`${config.public.apiBase}/Note`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: {
+        noteID: noteID,
+        noteTitle: editForm.value.title,
+        noteContent: editForm.value.content
+      }
+    });
+
+    editingNoteId.value = null;
+    await fetchNotes(); // Refresh list
+    alert('Note updated!');
+  } catch (err) {
+    console.error(err);
+    alert('Failed to update note.');
+  }
+}
+
+
 
 // Fetch notes from API
 async function fetchNotes() {
