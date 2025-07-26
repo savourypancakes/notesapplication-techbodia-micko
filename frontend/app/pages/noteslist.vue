@@ -116,6 +116,13 @@
       </ul>
       <p v-else class="text-gray-500">No notes found.</p>
     </div>
+    <button
+      class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 float-right"
+      @click="logout"
+    >
+      Logout
+    </button>
+
   </div>
 </template>
 
@@ -169,6 +176,12 @@ const filteredNotes = computed(() => {
   return result;
 });
 
+const logout = () => {
+  localStorage.removeItem('token');  // Clear JWT
+  // Redirect to login page
+  window.location.href = '/';   // or use router.push if you use vue-router
+};
+
 
 function startEditing(note) {
   editingNoteId.value = note.noteID;
@@ -202,6 +215,8 @@ function getToken() {
 function formatDate(dateString) {
   return new Date(dateString).toLocaleString();
 }
+
+
 
 async function deleteNote(id) {
   const token = getToken();
