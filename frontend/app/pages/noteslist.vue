@@ -36,72 +36,83 @@
 
     <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-md">
       <h2 class="text-xl font-bold mb-4">Your Notes</h2>
-      <ul v-if="notes.length">
-      <li
-        v-for="note in notes"
-        :key="note.noteID"
-        class="mb-4 p-4 border border-gray-200 rounded-md"
-      >
-        <!-- IF EDITING THIS NOTE -->
-        <div v-if="editingNoteId === note.noteID">
-          <input
-            v-model="editForm.title"
-            class="w-full mb-2 px-3 py-2 border rounded"
-            placeholder="Title"
-          />
-          <textarea
-            v-model="editForm.content"
-            class="w-full mb-2 px-3 py-2 border rounded"
-            placeholder="Content"
-          ></textarea>
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search by title"
+        class="w-full p-2 border rounded mb-4"
+      />
+      <select v-model="sortOption" class="p-2 border rounded mb-4 ml-2">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="a-z">Title A-Z</option>
+        <option value="z-a">Title Z-A</option>
+      </select>
+      <ul v-if="filteredNotes.length">
+        <li
+          v-for="note in filteredNotes"
+          :key="note.noteID"
+          class="mb-4 p-4 border border-gray-200 rounded-md"
+        >
+          <!-- IF EDITING THIS NOTE -->
+          <div v-if="editingNoteId === note.noteID">
+            <input
+              v-model="editForm.title"
+              class="w-full mb-2 px-3 py-2 border rounded"
+              placeholder="Title"
+            />
+            <textarea
+              v-model="editForm.content"
+              class="w-full mb-2 px-3 py-2 border rounded"
+              placeholder="Content"
+            ></textarea>
 
-          <div class="flex gap-2">
-            <button @click="saveEdit(note.noteID)" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
-              Save
-            </button>
-            <button @click="cancelEdit" class="bg-gray-300 px-4 py-1 rounded hover:bg-gray-400">
-              Cancel
-            </button>
-          </div>
-        </div>
-
-        <div v-else @click="note.content && toggleNote(note.noteID)" class="cursor-pointer">
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg font-semibold text-blue-600">
-              {{ note.title }}
-              <span v-if="note.content" class="ml-2 text-sm">
-                {{ isExpanded(note.noteID) ? '▼' : '►' }}
-              </span>
-            </h3>
-            <button
-              @click.stop="startEditing(note)"
-              class="text-sm text-yellow-600 hover:underline"
-            >
-              Edit
-            </button>
+            <div class="flex gap-2">
+              <button @click="saveEdit(note.noteID)" class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+                Save
+              </button>
+              <button @click="cancelEdit" class="bg-gray-300 px-4 py-1 rounded hover:bg-gray-400">
+                Cancel
+              </button>
+            </div>
           </div>
 
-          <p v-if="note.content && isExpanded(note.noteID)" class="text-gray-600 mt-2">
-            {{ note.content }}
+          <div v-else @click="note.content && toggleNote(note.noteID)" class="cursor-pointer">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-blue-600">
+                {{ note.title }}
+                <span v-if="note.content" class="ml-2 text-sm">
+                  {{ isExpanded(note.noteID) ? '▼' : '►' }}
+                </span>
+              </h3>
+              <button
+                @click.stop="startEditing(note)"
+                class="text-sm text-yellow-600 hover:underline"
+              >
+                Edit
+              </button>
+            </div>
+
+            <p v-if="note.content && isExpanded(note.noteID)" class="text-gray-600 mt-2">
+              {{ note.content }}
+            </p>
+          </div>
+
+          <p class="text-xs text-gray-400 mt-1">
+            Created: {{ formatDate(note.createdOn) }}
           </p>
-        </div>
-
-        <p class="text-xs text-gray-400 mt-1">
-          Created: {{ formatDate(note.createdOn) }}
-        </p>
-        <p class="text-xs text-gray-400">
-          Updated: {{ formatDate(note.updatedOn) }}
-        </p>
-        <div class="flex justify-end mt-2">
-          <button
-            @click="deleteNote(note.noteID)"
-            class="text-red-500 hover:underline text-sm"
-          >
-            Delete
-          </button>
-        </div>
-      </li>
-
+          <p class="text-xs text-gray-400">
+            Updated: {{ formatDate(note.updatedOn) }}
+          </p>
+          <div class="flex justify-end mt-2">
+            <button
+              @click="deleteNote(note.noteID)"
+              class="text-red-500 hover:underline text-sm"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
       </ul>
       <p v-else class="text-gray-500">No notes found.</p>
     </div>
@@ -123,6 +134,41 @@ const editForm = ref({
   noteTitle: '',
   noteContent: ''
 });
+
+const searchQuery = ref('');
+const sortOption = ref('newest');
+
+const filteredNotes = computed(() => {
+  let result = [...notes.value];
+
+  // 1. Search
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase();
+    result = result.filter(note =>
+      note.title.toLowerCase().includes(q)
+    );
+  }
+
+  // 2. Sort
+  switch (sortOption.value) {
+    case 'newest':
+      result.sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn));
+      break;
+    case 'oldest':
+      result.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn));
+      break;
+    case 'a-z':
+      result.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'z-a':
+      result.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+  }
+
+
+  return result;
+});
+
 
 function startEditing(note) {
   editingNoteId.value = note.noteID;
