@@ -1,5 +1,6 @@
 {
   "name": "nuxt-app",
+  "homepage": "savourypancakes.github.io/notesapplication-techbodia-micko/",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,7 +8,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@nuxt/content": "^3.6.3",
