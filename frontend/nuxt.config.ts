@@ -5,10 +5,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   app: {
-    baseURL: '/',
+    baseURL: '/notesapplication-techbodia-micko/frontend/',
   },
   vite: {
-    base: '/',
+    base: '/notesapplication-techbodia-micko/frontend/',
     plugins: [
       tailwindcss(),
     ],
