@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://notesapplication-techbodia-micko.vercel.app/api'
+      apiBase: 'https://notesapplication-techbodia-micko.onrender.com//api'
     }
   },
   modules: [
