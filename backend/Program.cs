@@ -60,5 +60,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.UseCors("AllowFrontend");
+app.MapGet("/ping", () => Results.Ok("pong"));
 
 app.Run();
