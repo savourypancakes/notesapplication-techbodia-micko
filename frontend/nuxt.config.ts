@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     baseURL: process.env.NODE_ENV === 'production' ? '/notesapplication-techbodia-micko/' : '/',
   },
   vite: {
+    base: process.env.NODE_ENV === 'production' ? '/notesapplication-techbodia-micko/' : '/',
     plugins: [
       tailwindcss(),
     ],
