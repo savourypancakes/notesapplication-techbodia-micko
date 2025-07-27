@@ -1,6 +1,6 @@
 {
   "name": "nuxt-app",
-  "homepage": "savourypancakes.github.io/notesapplication-techbodia-micko/",
+  "homepage": "savourypancakes.github.io/notesapplication-techbodia-micko/frontend/",
   "private": true,
   "type": "module",
   "scripts": {
