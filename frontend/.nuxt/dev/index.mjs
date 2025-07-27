@@ -901,9 +901,9 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "apiBase": "http://localhost:5126/api",
+    "apiBase": "https://notesapplication-techbodia-micko.onrender.com/api",
     "content": {
-      "wsUrl": "ws://localhost:4001/"
+      "wsUrl": "ws://localhost:4000/"
     },
     "mdc": {
       "components": {
