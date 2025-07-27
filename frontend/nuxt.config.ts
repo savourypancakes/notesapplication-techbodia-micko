@@ -5,10 +5,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   app: {
-    baseURL: process.env.NODE_ENV === 'production' ? '/notesapplication-techbodia-micko/' : '/',
+    baseURL: '/',
   },
   vite: {
-    base: process.env.NODE_ENV === 'production' ? '/notesapplication-techbodia-micko/' : '/',
+    base: '/',
     plugins: [
       tailwindcss(),
     ],
