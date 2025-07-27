@@ -10,23 +10,22 @@ public class AuthService : IAuthService
     private readonly IConfiguration config;
     private readonly IDbConnection connect;
 
-    public AuthService(IConfiguration cg, IDbConnection ct)
+    public AuthService(IConfiguration configuration, IDbConnection dbConnection)
     {
-        config = cg;
-        connect = ct;
+        config = configuration;
+        connect = dbConnection;
     }
 
     public async Task<bool> Register(string username, string password)
     {
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-
         var sql = "INSERT INTO [User] (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
         try
         {
             await connect.ExecuteAsync(sql, new { Username = username, PasswordHash = passwordHash });
             return true;
         }
-        catch
+        catch (Exception ex)
         {
             return false;
         }
@@ -47,7 +46,6 @@ public class AuthService : IAuthService
     {
         var jwtSettings = config.GetSection("JwtSettings");
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
-
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
@@ -60,9 +58,5 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-    internal bool Register(object username, object password)
-    {
-        throw new NotImplementedException();
-    }
 }
+
