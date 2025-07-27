@@ -5,17 +5,17 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   app: {
-    baseURL: '/notesapplication-techbodia-micko/frontend/',
+    baseURL: '/notesapplication-techbodia-micko/',
   },
   vite: {
-    base: '/notesapplication-techbodia-micko/frontend/',
+    base: '/notesapplication-techbodia-micko/',
     plugins: [
       tailwindcss(),
     ],
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://notesapplication-techbodia-micko.onrender.com/api'  // remove double slash
+      apiBase: 'https://notesapplication-techbodia-micko.onrender.com/api'
     }
   },
   modules: [
