@@ -903,7 +903,7 @@ const _inlineRuntimeConfig = {
   "public": {
     "apiBase": "http://localhost:5126/api",
     "content": {
-      "wsUrl": "ws://localhost:4000/"
+      "wsUrl": "ws://localhost:4001/"
     },
     "mdc": {
       "components": {
