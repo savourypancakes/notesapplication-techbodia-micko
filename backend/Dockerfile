@@ -1,22 +1,19 @@
-# Use the official .NET SDK image to build the app
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# Use the .NET SDK image to build the app
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY backend/*.csproj ./  
+# Copy csproj file and restore
+COPY *.csproj ./
 RUN dotnet restore
 
+# Copy everything else and publish
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# Use the runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
-# Expose port (match the port your app runs on)
-EXPOSE 80
-
-# Set entry point
 ENTRYPOINT ["dotnet", "backend.dll"]
- 
