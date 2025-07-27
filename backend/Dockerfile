@@ -6,7 +6,7 @@ WORKDIR /app
 COPY backend/*.csproj ./  
 RUN dotnet restore
 
-COPY backend/. ./  
+COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Use the runtime image
@@ -19,3 +19,4 @@ EXPOSE 80
 
 # Set entry point
 ENTRYPOINT ["dotnet", "backend.dll"]
+ 
