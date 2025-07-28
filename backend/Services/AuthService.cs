@@ -47,7 +47,7 @@ public class AuthService : IAuthService
 
     public async Task<string?> Login(string username, string password)
     {
-        var sql = "SELECT * FROM [User] WHERE Username = @Username";
+        var sql = "SELECT * FROM \"User\" WHERE \"Username\" = @Username";
         var user = await connect.QuerySingleOrDefaultAsync<User>(sql, new { Username = username });
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
