@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     }
   },
   vite: {
+    base: '/notesapplication-techbodia-micko/',
     plugins: [
       tailwindcss(),
     ],
