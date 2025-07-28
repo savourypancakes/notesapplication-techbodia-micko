@@ -18,18 +18,30 @@ public class AuthService : IAuthService
 
     public async Task<bool> Register(string username, string password)
     {
+        // Check if username exists
+        var existsSql = "SELECT 1 FROM \"User\" WHERE Username = @Username";
+        var exists = await connect.QueryFirstOrDefaultAsync<int?>(existsSql, new { Username = username });
+
+        if (exists.HasValue)
+        {
+            // Username already exists
+            return false;
+        }
+
         var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-        var sql = "INSERT INTO [User] (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
+        var insertSql = "INSERT INTO \"User\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
         try
         {
-            await connect.ExecuteAsync(sql, new { Username = username, PasswordHash = passwordHash });
+            await connect.ExecuteAsync(insertSql, new { Username = username, PasswordHash = passwordHash });
             return true;
         }
         catch (Exception ex)
         {
+            // log error if needed
             return false;
         }
     }
+
 
     public async Task<string?> Login(string username, string password)
     {
