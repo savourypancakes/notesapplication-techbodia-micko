@@ -18,29 +18,31 @@ public class AuthService : IAuthService
 
     public async Task<bool> Register(string username, string password)
     {
-        // Check if username exists
-        var existsSql = "SELECT 1 FROM \"User\" WHERE Username = @Username";
-        var exists = await connect.QueryFirstOrDefaultAsync<int?>(existsSql, new { Username = username });
-
-        if (exists.HasValue)
-        {
-            // Username already exists
-            return false;
-        }
-
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-        var insertSql = "INSERT INTO \"User\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
         try
         {
+            // Your existing check for username...
+            var existsSql = "SELECT 1 FROM \"User\" WHERE Username = @Username";
+            var exists = await connect.QueryFirstOrDefaultAsync<int?>(existsSql, new { Username = username });
+
+            if (exists.HasValue)
+            {
+                return false;
+            }
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+            var insertSql = "INSERT INTO \"User\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
             await connect.ExecuteAsync(insertSql, new { Username = username, PasswordHash = passwordHash });
             return true;
         }
         catch (Exception ex)
         {
-            // log error if needed
+            // Log exception to console or a file for debugging
+            Console.Error.WriteLine($"Register error: {ex.Message}\n{ex.StackTrace}");
+            // Optionally: throw; // to let it bubble up if you want to see it in logs
             return false;
         }
     }
+
 
 
     public async Task<string?> Login(string username, string password)
