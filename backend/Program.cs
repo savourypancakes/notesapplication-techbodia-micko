@@ -38,7 +38,7 @@ builder.Services.AddCors(options =>
         policy => policy
             .WithOrigins(
                 "http://localhost:3000",
-                "https://savourypancakes.github.io"
+                "https://savourypancakes.github.io/notesapplication-techbodia-micko"
             )
             .AllowAnyMethod()
             .AllowAnyHeader());
