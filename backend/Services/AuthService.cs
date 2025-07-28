@@ -21,7 +21,7 @@ public class AuthService : IAuthService
         try
         {
             // Your existing check for username...
-            var existsSql = "SELECT 1 FROM \"users\" WHERE Username = @Username";
+            var existsSql = "SELECT 1 FROM \"users\" WHERE \"Username\" = @Username";
             var exists = await connect.QueryFirstOrDefaultAsync<int?>(existsSql, new { Username = username });
 
             if (exists.HasValue)
