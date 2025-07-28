@@ -36,8 +36,8 @@ namespace backend.Controllers
             var dtoList = notes.Select(note => new NoteDto
             {
                 NoteID = note.NoteID,
-                Title = note.NoteTitle,
-                Content = note.NoteContent,
+                NoteTitle = note.NoteTitle,
+                NoteContent = note.NoteContent,
                 CreatedOn = note.CreatedOn,
                 UpdatedOn = note.UpdatedOn
             });
@@ -54,14 +54,14 @@ namespace backend.Controllers
             if (userId == null) return Unauthorized();
 
             var note = await service.GetNoteById(id);
-            if (note == null || note.UserId != userId.Value)
+            if (note == null || note.UserID != userId.Value)
                 return NotFound("Note not found or access denied.");
 
             var dto = new NoteDto
             {
                 NoteID = note.NoteID,
-                Title = note.NoteTitle,
-                Content = note.NoteContent,
+                NoteTitle = note.NoteTitle,
+                NoteContent = note.NoteContent,
                 CreatedOn = note.CreatedOn,
                 UpdatedOn = note.UpdatedOn
             };
@@ -87,8 +87,8 @@ namespace backend.Controllers
             var dtoList = notes.Select(note => new NoteDto
             {
                 NoteID = note.NoteID,
-                Title = note.NoteTitle,
-                Content = note.NoteContent,
+                NoteTitle = note.NoteTitle,
+                NoteContent = note.NoteContent,
                 CreatedOn = note.CreatedOn,
                 UpdatedOn = note.UpdatedOn
             });
@@ -109,7 +109,7 @@ namespace backend.Controllers
             {
                 NoteTitle = dto.NoteTitle,
                 NoteContent = dto.NoteContent,
-                UserId = userId.Value,
+                UserID = userId.Value,
                 CreatedOn = DateTime.Now
             };
 
@@ -126,7 +126,7 @@ namespace backend.Controllers
             if (userId == null) return Unauthorized();
 
             var existingNote = await service.GetNoteById(dto.NoteID);
-            if (existingNote == null || existingNote.UserId != userId.Value)
+            if (existingNote == null || existingNote.UserID != userId.Value)
                 return NotFound("Note not found or access denied.");
 
             existingNote.NoteTitle = dto.NoteTitle;
