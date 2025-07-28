@@ -30,7 +30,7 @@ public class AuthService : IAuthService
             }
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-            var insertSql = "INSERT INTO \"users\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
+            var insertSql = "INSERT INTO \"users\" (\"Username\", \"PasswordHash\") VALUES (@Username, @PasswordHash)";
             await connect.ExecuteAsync(insertSql, new { Username = username, PasswordHash = passwordHash });
             return true;
         }
