@@ -70,12 +70,12 @@
             >
               <div v-if="editingNoteId === note.noteID">
                 <input
-                  v-model="editForm.title"
+                  v-model="editForm.noteTitle"
                   class="w-full mb-2 px-3 py-2 border rounded"
                   placeholder="Title"
                 />
                 <textarea
-                  v-model="editForm.content"
+                  v-model="editForm.noteContent"
                   class="w-full mb-2 px-3 py-2 border rounded"
                   placeholder="Content"
                 ></textarea>
@@ -90,11 +90,11 @@
                 </div>
               </div>
 
-              <div v-else @click="note.content && toggleNote(note.noteID)" class="cursor-pointer">
+              <div v-else @click="note.noteContent && toggleNote(note.noteID)" class="cursor-pointer">
                 <div class="flex justify-between items-center">
                   <div class="flex text-lg items-center gap-1 font-semibold text-purple-600">
-                    {{ note.title }}
-                    <span v-if="note.content" class="hover:bg-purple-100 p-1 rounded-full">
+                    {{ note.noteTitle }}
+                    <span v-if="note.noteContent" class="hover:bg-purple-100 p-1 rounded-full">
                       <svg v-if = "!isExpanded(note.noteID)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                       </svg>
@@ -124,8 +124,8 @@
                   </div>
                 </div>
 
-                <p v-if="note.content && isExpanded(note.noteID)" class="text-gray-600 mt-2">
-                  {{ note.content }}
+                <p v-if="note.noteContent && isExpanded(note.noteID)" class="text-gray-600 mt-2">
+                  {{ note.noteContent }}
                 </p>
               </div>
 
@@ -169,7 +169,7 @@ const filteredNotes = computed(() => {
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase();
     result = result.filter(note =>
-      note.title.toLowerCase().includes(q)
+      note.noteTitle.toLowerCase().includes(q)
     );
   }
 
@@ -182,10 +182,10 @@ const filteredNotes = computed(() => {
       result.sort((a, b) => new Date(a.createdOn) - new Date(b.createdOn));
       break;
     case 'a-z':
-      result.sort((a, b) => a.title.localeCompare(b.title));
+      result.sort((a, b) => a.noteTitle.localeCompare(b.noteTitle));
       break;
     case 'z-a':
-      result.sort((a, b) => b.title.localeCompare(a.title));
+      result.sort((a, b) => b.noteTitle.localeCompare(a.noteTitle));
       break;
   }
 
@@ -201,8 +201,8 @@ const logout = () => {
 
 function startEditing(note) {
   editingNoteId.value = note.noteID;
-  editForm.value.title = note.title;
-  editForm.value.content = note.content;
+  editForm.value.noteTitle = note.noteTitle;
+  editForm.value.noteContent = note.noteContent;
 }
 
 function cancelEdit() {
@@ -263,8 +263,8 @@ async function saveEdit(noteID) {
       },
       body: {
         noteID: noteID,
-        noteTitle: editForm.value.title,
-        noteContent: editForm.value.content
+        noteTitle: editForm.value.noteTitle,
+        noteContent: editForm.value.noteContent
       }
     });
 
