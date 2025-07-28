@@ -43,7 +43,7 @@ declare const inlineConfig = {
     }
   },
   "icon": {
-    "provider": "server",
+    "provider": "iconify",
     "class": "",
     "aliases": {},
     "iconifyApiEndpoint": "https://api.iconify.design",

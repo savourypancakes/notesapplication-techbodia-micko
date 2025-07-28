@@ -80,19 +80,19 @@
         "../node_modules/nuxt/dist/app/compat/vue-demi"
       ],
       "#content/components": [
-        "./content/components"
+        "./content/components.ts"
       ],
       "#content/manifest": [
-        "./content/manifest"
+        "./content/manifest.ts"
       ],
       "#mdc-configs": [
-        "./mdc-configs"
+        "./mdc-configs.mjs"
       ],
       "#mdc-highlighter": [
-        "./mdc-highlighter"
+        "./mdc-highlighter.mjs"
       ],
       "#mdc-imports": [
-        "./mdc-imports"
+        "./mdc-imports.mjs"
       ],
       "#image": [
         "../node_modules/@nuxt/image/dist/runtime"
@@ -101,7 +101,7 @@
         "../node_modules/@nuxt/image/dist/runtime/*"
       ],
       "#nuxt-scripts-validator": [
-        "../node_modules/@nuxt/scripts/dist/runtime/validation/valibot"
+        "../node_modules/@nuxt/scripts/dist/runtime/validation/mock"
       ],
       "#nuxt-scripts": [
         "../node_modules/@nuxt/scripts/dist/runtime"
@@ -128,7 +128,7 @@
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/dev"
+        "./manifest/meta/99106328-12e5-45aa-9a81-bab56b8f6c55.json"
       ],
       "#components": [
         "./components"
@@ -243,7 +243,7 @@
     "../node_modules/@nuxt/telemetry/runtime/server",
     "../node_modules/@nuxt/telemetry/dist/runtime/server",
     "../node_modules/@nuxt/telemetry/*.*",
-    "dev",
+    "../.output",
     "../server"
   ]
 }
