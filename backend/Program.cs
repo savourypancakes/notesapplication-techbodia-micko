@@ -31,15 +31,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// Configure CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:3000/notesapplication-techbodia-micko/", "https://savourypancakes.github.io/notesapplication-techbodia-micko/") // or your frontend domain
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
+        policy => policy
+            .WithOrigins(
+                "http://localhost:3000",
+                "https://savourypancakes.github.io"
+            )
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
-// Register services
+// Register other services
 builder.Services.AddScoped<NoteService, NoteService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddEndpointsApiExplorer();
@@ -48,16 +53,20 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-
+// Enable Swagger UI
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Apply CORS policy early, before auth and routing
+app.UseCors("AllowFrontend");
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
-app.UseCors("AllowFrontend");
+
 app.MapGet("/ping", () => Results.Ok("pong"));
 
 app.Run();
