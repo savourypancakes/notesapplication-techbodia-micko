@@ -903,7 +903,7 @@ const _inlineRuntimeConfig = {
   "public": {
     "apiBase": "https://notesapplication-techbodia-micko.onrender.com/api",
     "content": {
-      "wsUrl": "ws://localhost:4001/"
+      "wsUrl": "ws://localhost:4000/"
     },
     "mdc": {
       "components": {
@@ -1440,22 +1440,7 @@ _EAeUZsn1OgzNoJdBBYv7JWCk83CSRHJT2bn7iL5Yxs4,
 _7Ofg2Ujg867U2lxgGh0vicnpLrumMhIgQiFxkec9A
 ];
 
-const assets = {
-  "/index.mjs": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"18a7e-zqVgwnSSSu4n0T2N+l9Nk4jGO8E\"",
-    "mtime": "2025-07-28T00:10:35.908Z",
-    "size": 100990,
-    "path": "index.mjs"
-  },
-  "/index.mjs.map": {
-    "type": "application/json",
-    "etag": "\"575bc-slS4w8zGrq04qLNhZQuJk7iSI3k\"",
-    "mtime": "2025-07-28T00:10:35.908Z",
-    "size": 357820,
-    "path": "index.mjs.map"
-  }
-};
+const assets = {};
 
 function readAsset (id) {
   const serverDir = dirname$1(fileURLToPath(globalThis._importMeta_.url));
