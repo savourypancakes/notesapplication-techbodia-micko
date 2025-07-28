@@ -4,7 +4,7 @@ namespace backend.Models;
 public class Note
 {
     public int NoteID { get; set; }
-    public required int UserId { get; set; }
+    public required int UserID { get; set; }
     [ForeignKey("UserId")]
     public User User { get; set; } = null!;
     public required string NoteTitle { get; set; }
