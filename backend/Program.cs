@@ -34,7 +34,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
-        policy => policy.WithOrigins("http://localhost:3000") // or your frontend domain
+        policy => policy.WithOrigins("http://localhost:3000/notesapplication-techbodia-micko/", "https://savourypancakes.github.io/notesapplication-techbodia-micko/") // or your frontend domain
                         .AllowAnyMethod()
                         .AllowAnyHeader());
 });
