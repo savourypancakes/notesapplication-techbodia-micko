@@ -21,7 +21,7 @@ public class AuthService : IAuthService
         try
         {
             // Your existing check for username...
-            var existsSql = "SELECT 1 FROM \"User\" WHERE Username = @Username";
+            var existsSql = "SELECT 1 FROM \"users\" WHERE Username = @Username";
             var exists = await connect.QueryFirstOrDefaultAsync<int?>(existsSql, new { Username = username });
 
             if (exists.HasValue)
@@ -30,7 +30,7 @@ public class AuthService : IAuthService
             }
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-            var insertSql = "INSERT INTO \"User\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
+            var insertSql = "INSERT INTO \"users\" (Username, PasswordHash) VALUES (@Username, @PasswordHash)";
             await connect.ExecuteAsync(insertSql, new { Username = username, PasswordHash = passwordHash });
             return true;
         }
