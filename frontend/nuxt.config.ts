@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     baseURL: '/notesapplication-techbodia-micko/',
   },
   vite: {
-    base: '/notesapplication-techbodia-micko/',
     plugins: [
       tailwindcss(),
     ],
