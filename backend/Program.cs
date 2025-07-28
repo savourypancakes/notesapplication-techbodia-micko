@@ -39,7 +39,7 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "http://localhost:3000",
                 "https://savourypancakes.github.io/notesapplication-techbodia-micko",
-                "https://notesapplication-techbodia-micko-1.onrender.com/"
+                "https://notesapplication-techbodia-micko-1.onrender.com"
             )
             .AllowAnyMethod()
             .AllowAnyHeader());
