@@ -1,1 +1,0 @@
-export { default } from "C:/Users/kokmi/Documents/GitHub/notesapplication-techbodia-micko/frontend/node_modules/@nuxt/image/dist/runtime/components/NuxtImg.vue";
